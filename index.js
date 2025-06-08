@@ -29,9 +29,10 @@ async function startServer() {
               p { font-size: 1.5em; color: #FF5C00; margin-bottom: 20px; }
               .status-indicator { width: 25px; height: 25px; background-color: #2ecc71; border-radius: 50%; display: inline-block; vertical-align: middle; box-shadow: 0 0 20px #2ecc71, 0 0 20px #2ecc71; animation: pulse 1s infinite ease-in-out; }
               @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
-              .status-label { font-size: 2.1em; font-weight: bold; color: #ffffff; /* White */ vertical-align: middle; margin-right: 5px;}
-              .status-value { font-size: 2.1em; font-weight: bold; color: #3b82f6; /* Tailwind's blue-500 */ vertical-align: middle; margin-right: 10px;}
+              .status-label { font-size: 1.5em; font-weight: bold; color: #ffffff; /* White */ vertical-align: middle; margin-right: 5px;}
+              .status-value { font-size: 1.5em; font-weight: bold; color: #3b82f6; /* Tailwind's blue-500 */ vertical-align: middle; margin-right: 10px;}
               .status-line { margin-bottom: 20px; /* Same as h1's margin-bottom */ }
+              .api-version {color: #00c04b;}
             </style>
           </head>
           <body>
@@ -40,9 +41,10 @@ async function startServer() {
               <p>This server powers the TourZen platform, managing tours, bookings, and user data.</p>
               <div class="status-line">
                 <span class="status-label">Server Status:</span>
-                <span class="status-value">Online</span>
+                <span class="status-value">Online & Connected to MongoDB Database</span>
                 <span class="status-indicator"></span>
               </div>
+              <p class="api-version">API Version: 1.0</p>
             </div>
           </body>
         </html>
