@@ -35,13 +35,17 @@ const addBooking = async (req, res) => {
       ...bookingData,
       packageId: new ObjectId(bookingData.packageId), // Ensure packageId is an ObjectId
       touristEmail: req.user.email, // Ensure the booking is for the logged-in user
-      booking_date: new Date(), // Server-side timestamp for booking creation
+      // Use the client-sent bookingDate (numeric timestamp) and convert to Date object
+      // Assuming client sends 'bookingDate' and server stores as 'booking_date'
+      booking_date: new Date(bookingData.bookingDate), 
+      // booking_date: new Date(), // Server-side timestamp for booking creation
       status: 'In Review', // Default status as per reqs.md (pending was an example)
     };
     // Add denormalized package details
     newBooking.packageImage = packageDetails.image;
     newBooking.departure_location = packageDetails.departure_location;
     newBooking.destination = packageDetails.destination;
+    newBooking.guide_contact_no = packageDetails.guide_contact_no; // Denormalize guide's contact number
 
     const result = await bookingsCollection.insertOne(newBooking);
 
