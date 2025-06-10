@@ -44,7 +44,21 @@ const addPackage = async (req, res) => {
 const getAllPackages = async (req, res) => {
   try {
     const packagesCollection = await getPackagesCollection();
-    const packages = await packagesCollection.find({}).toArray();
+    // const packages = await packagesCollection.find({}).toArray();
+    const searchTerm = req.query.search; // Get the search term from query parameters
+    let query = {}; // Default query fetches all packages
+
+    if (searchTerm) {
+      // If a search term exists, build a query using $regex
+      // This searches in tour_name OR destination, case-insensitive ('i')
+      query = {
+        $or: [
+          { tour_name: { $regex: searchTerm, $options: 'i' } },
+          { destination: { $regex: searchTerm, $options: 'i' } },
+        ],
+      };
+    }
+    const packages = await packagesCollection.find(query).toArray(); // Apply the query
     res.status(200).send(packages);
   } catch (error) {
     console.error('Error fetching packages:', error);
