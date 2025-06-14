@@ -179,7 +179,17 @@ const getFeaturedPackages = async (req, res) => {
   try {
     const packagesCollection = await getPackagesCollection();
     // Fetch top 6 packages, sorted by creation date in descending order
-    const packages = await packagesCollection.find({}).sort({ created_at: -1 }).limit(6).toArray();
+    // const packages = await packagesCollection.find({}).sort({ created_at: -1 }).limit(6).toArray();
+    // 
+    // Fetch top 6 packages, sorted by the closest upcoming departure_date
+    // It's also good practice to filter out packages whose departure_date is in the past.
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to the beginning of today to include today's departures
+
+    const packages = await packagesCollection.find({ departure_date: { $gte: today.toISOString() } }) // Find packages with departure_date from today onwards
+      .sort({ departure_date: 1 }) // Sort by departure_date in ascending order (closest first)
+      .limit(6) // Limit to 6 packages
+      .toArray();
     res.status(200).send(packages);
   } catch (error)
  {
