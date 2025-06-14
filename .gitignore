@@ -17,3 +17,8 @@ node_modules/
 .env.test.local
 .env.production.local
 .vercel
+
+
+
+# firebase-admin sdk
+src/config/firebase-service-account.json
