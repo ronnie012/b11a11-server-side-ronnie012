@@ -1,5 +1,5 @@
 const express = require('express');
-const { addPackage, getAllPackages, getFeaturedPackages, getPackageById, getMyCreatedPackages, updatePackage, deletePackage } = require('../controllers/packageController');
+const { addPackage, getAllPackages, getFeaturedPackages, getPackageById, getMyCreatedPackages, updatePackage, deletePackage, getGalleryImages } = require('../controllers/packageController');
 const verifyJWT = require('../middleware/verifyJWT'); // To protect the add package route
 
 const router = express.Router();
@@ -17,6 +17,9 @@ router.get('/featured', getFeaturedPackages);
 // This needs to be before the /:id route to avoid "my-packages" being treated as an ID
 router.get('/my-packages', verifyJWT, getMyCreatedPackages);
 
+// ... other routes
+router.get('/gallery-images', getGalleryImages);
+
 // GET /api/v1/packages/:id - Get a single package by ID (Public)
 router.get('/:id', getPackageById);
 
@@ -25,5 +28,6 @@ router.put('/:id', verifyJWT, updatePackage);
 
 // DELETE /api/v1/packages/:id - Delete a package by ID (Protected)
 router.delete('/:id', verifyJWT, deletePackage);
+
 
 module.exports = router;

@@ -27,7 +27,7 @@ const addPackage = async (req, res) => {
       guide_name: finalGuideName,
       guide_photo: finalGuidePhoto,
       guide_email: req.user.email, // The email of the guide is the user creating the package
-      bookingCount: 0,
+      booking_count: 0,
       created_at: new Date(),
       createdByEmail: req.user.email, // Add a field to identify the creator
     };
@@ -188,6 +188,24 @@ const getFeaturedPackages = async (req, res) => {
   }
 };
 
+// Controller to get images for the tour gallery (e.g., 10 most recent)
+const getGalleryImages = async (req, res) => {
+  try {
+    const packagesCollection = await getPackagesCollection();
+    // Fetch top 10 packages, sorted by creation date, projecting only necessary fields
+    const galleryItems = await packagesCollection.find({})
+      .sort({ created_at: -1 })
+      .limit(10)
+      .project({ image: 1, tour_name: 1, _id: 1 }) // Select only image, tour_name, and _id
+      .toArray();
+    res.status(200).send(galleryItems);
+  } catch (error) {
+    console.error('Error fetching gallery images:', error);
+    res.status(500).send({ message: 'Failed to fetch gallery images', error: error.message });
+  }
+};
+
+
 module.exports = {
   addPackage,
   getAllPackages,
@@ -196,4 +214,5 @@ module.exports = {
   getMyCreatedPackages, // Export the new controller
   updatePackage,        // Export the update controller
   deletePackage,        // Export the delete controller
+  getGalleryImages,     // Export the new gallery images controller
 };

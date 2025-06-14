@@ -30,6 +30,16 @@ const addBooking = async (req, res) => {
         return res.status(404).send({ message: 'Package not found for booking.' });
     }
 
+    // --- Start: Prevent Duplicate Bookings ---
+    const existingBooking = await bookingsCollection.findOne({
+      packageId: new ObjectId(bookingData.packageId),
+      touristEmail: req.user.email,
+    });
+    if (existingBooking) {
+      return res.status(409).send({ message: 'You have already booked this package.' });
+    }
+    // --- End: Prevent Duplicate Bookings ---
+
     // Construct the new booking document
     const newBooking = {
       ...bookingData,
@@ -39,7 +49,7 @@ const addBooking = async (req, res) => {
       // Assuming client sends 'bookingDate' and server stores as 'booking_date'
       booking_date: new Date(bookingData.bookingDate), 
       // booking_date: new Date(), // Server-side timestamp for booking creation
-      status: 'In Review', // Default status as per reqs.md (pending was an example)
+      status: 'Pending', // Default status as per reqs.md (pending was an example)
     };
     // Add denormalized package details
     newBooking.packageImage = packageDetails.image;
@@ -49,10 +59,10 @@ const addBooking = async (req, res) => {
 
     const result = await bookingsCollection.insertOne(newBooking);
 
-    // Increment bookingCount in the tourPackages collection
+    // Increment booking_count in the tourPackages collection
     await packagesCollection.updateOne(
       { _id: new ObjectId(bookingData.packageId) },
-      { $inc: { bookingCount: 1 } }
+      { $inc: { booking_count: 1 } }
     );
 
     res.status(201).send({ message: 'Booking added successfully', insertedId: result.insertedId });
