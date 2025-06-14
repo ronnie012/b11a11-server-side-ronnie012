@@ -1,11 +1,11 @@
 const express = require('express');
-const { issueJwtToken } = require('../controllers/authController');
+const { verifyFirebaseTokenAndIssueJwt } = require('../controllers/authController'); // Updated import
 const verifyJWT = require('../middleware/verifyJWT'); // Import the middleware
 
 const router = express.Router();
 
-// Endpoint for client to get JWT after Firebase authentication
-router.post('/jwt', issueJwtToken);
+// Endpoint for client to get custom JWT after Firebase authentication (Firebase ID token verification)
+router.post('/firebase-login', verifyFirebaseTokenAndIssueJwt); // Use the updated controller function
 
 // A simple protected route for testing JWT verification
 router.get('/test-protected', verifyJWT, (req, res) => {
@@ -14,3 +14,5 @@ router.get('/test-protected', verifyJWT, (req, res) => {
 });
 
 module.exports = router;
+
+

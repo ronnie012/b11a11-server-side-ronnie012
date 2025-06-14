@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { connectDB } = require("./src/config/db"); // Import connectDB
+const { initializeFirebaseAdmin } = require("./src/config/firebaseAdmin"); // Import Firebase Admin initializer
 const authRoutes = require("./src/routes/authRoutes"); // Import auth routes
 const packageRoutes = require("./src/routes/packageRoutes"); // Import package routes
 const bookingRoutes = require("./src/routes/bookingRoutes"); // Import booking routes
@@ -12,6 +13,7 @@ const port = process.env.PORT || 5000;
 async function startServer() {
   try {
     await connectDB(); // Connect to MongoDB
+    initializeFirebaseAdmin(); // Initialize Firebase Admin SDK
 
     // A more attractive root route
     app.get("/", (req, res) => {

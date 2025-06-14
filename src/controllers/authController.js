@@ -1,23 +1,38 @@
 const { generateToken } = require('../utils/jwt');
+const { admin } = require('../config/firebaseAdmin'); // Import the initialized Firebase Admin instance
 
-const issueJwtToken = async (req, res) => {
+// Renamed to reflect its new purpose: verify Firebase ID token and then issue our custom JWT
+const verifyFirebaseTokenAndIssueJwt = async (req, res) => {
   try {
-    // Client now sends email, uid, displayName, photoURL
-    const { email, uid, displayName, photoURL } = req.body;
-    if (!email) {
-      return res.status(400).send({ message: 'User email is required to generate token.' });
+    const { idToken } = req.body; // Expecting Firebase ID token from client
+
+    if (!idToken) {
+      return res.status(400).send({ message: 'Firebase ID token is required.' });
     }
 
-    // Pass the necessary fields to generateToken
-    const token = generateToken({ email, uid, displayName, photoURL });
+    // Verify the ID token using Firebase Admin SDK
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+
+    // Token is verified, extract user info
+    const { uid, email, name, picture } = decodedToken;
+
+    // Prepare user object for our custom JWT
+    const userForOurJwt = {
+      uid,
+      email,
+      displayName: name, // Firebase 'name' maps to 'displayName'
+      photoURL: picture, // Firebase 'picture' maps to 'photoURL'
+    };
+
+    const token = generateToken(userForOurJwt);
 
     res.send({ token });
   } catch (error) {
-    console.error('Error issuing JWT token:', error);
-    res.status(500).send({ message: 'Failed to issue JWT token', error: error.message });
+    console.error('Error verifying Firebase ID token or issuing JWT:', error);
+    res.status(401).send({ message: 'Authentication failed. Invalid or expired token.', error: error.message });
   }
 };
 
 module.exports = {
-  issueJwtToken,
+  verifyFirebaseTokenAndIssueJwt, // Export the renamed function
 };
