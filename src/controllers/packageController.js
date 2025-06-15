@@ -205,7 +205,7 @@ const getGalleryImages = async (req, res) => {
     // Fetch top 10 packages, sorted by creation date, projecting only necessary fields
     const galleryItems = await packagesCollection.find({})
       .sort({ created_at: -1 })
-      .limit(10)
+      .limit(20)
       .project({ image: 1, tour_name: 1, _id: 1 }) // Select only image, tour_name, and _id
       .toArray();
     res.status(200).send(galleryItems);
