@@ -19,7 +19,7 @@ let db;
 async function connectDB() {
   if (db) return db;
   // await client.connect();
-  db = client.db(process.env.DB_NAME || "tourZenDB"); // You can specify DB name in .env or use a default
+  db = client.db(process.env.DB_NAME || "tourZenDbUpgraded"); // You can specify DB name in .env or use a default
   console.log("Successfully connected to MongoDB!");
   return db;
 }
