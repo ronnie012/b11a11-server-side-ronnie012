@@ -197,7 +197,7 @@ const getFeaturedPackages = async (req, res) => {
 
     const packages = await packagesCollection.find({ departure_date: { $gte: today.toISOString() } }) // Find packages with departure_date from today onwards
       .sort({ departure_date: 1 }) // Sort by departure_date in ascending order (closest first)
-      .limit(6) // Limit to 6 packages
+      .limit(8) //Limit to 8 packages(was 6 in assign-11 req, changed due to 4 card req with empty space)
       .toArray();
     res.status(200).send(packages);
   } catch (error)
