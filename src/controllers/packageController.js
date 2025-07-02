@@ -44,8 +44,8 @@ const addPackage = async (req, res) => {
 const getAllPackages = async (req, res) => {
   try {
     const packagesCollection = await getPackagesCollection();
-    // const packages = await packagesCollection.find({}).toArray();
     const searchTerm = req.query.search; // Get the search term from query parameters
+    const sortTerm = req.query.sort; // Get the sort term from query parameters
     let query = {}; // Default query fetches all packages
 
     if (searchTerm) {
@@ -58,7 +58,16 @@ const getAllPackages = async (req, res) => {
         ],
       };
     }
-    const packages = await packagesCollection.find(query).toArray(); // Apply the query
+
+    let sortOptions = {};
+    if (sortTerm) {
+      const [field, order] = sortTerm.split('-');
+      if (field === 'price' && (order === 'asc' || order === 'desc')) {
+        sortOptions[field] = order === 'asc' ? 1 : -1;
+      }
+    }
+
+    const packages = await packagesCollection.find(query).sort(sortOptions).toArray(); // Apply the query and sort
     res.status(200).send(packages);
   } catch (error) {
     console.error('Error fetching packages:', error);
