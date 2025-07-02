@@ -27,8 +27,8 @@ This is the server-side application for TourZen, a full-stack tour package booki
 
 ## Live URL
 
-*   **Server:** https://tour-zen-server.vercel.app/
-*   **Client:** https://tour-zen-012.web.app/
+*   **Server:** https://b11a11-server-side-ronnie012.vercel.app/
+*   **Client:** https://tour-zen-012-upgraded.web.app/
 
 ## Tech Stack
 
