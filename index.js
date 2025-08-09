@@ -15,7 +15,7 @@ async function startServer() {
     await connectDB(); // Connect to MongoDB
     initializeFirebaseAdmin(); // Initialize Firebase Admin SDK
 
-    // A more attractive root route
+    // Server API root route
     app.get("/", (req, res) => {
       res.send(`
         <html lang="en">
@@ -77,3 +77,4 @@ async function startServer() {
 }
 
 startServer();
+
