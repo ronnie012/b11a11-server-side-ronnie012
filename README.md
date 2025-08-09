@@ -1,6 +1,11 @@
 # TourZen - Tour Package Booking Platform (Server)
 
-## Project Purpose
+## Project Overview
+
+## Live URL
+
+*   **Server:** https://b11a11-server-side-ronnie012.vercel.app/
+*   **Client:** https://tour-zen-012-upgraded.web.app/
 
 This is the server-side application for TourZen, a full-stack tour package booking platform. It handles API requests from the client, manages data persistence with MongoDB, and implements business logic for user authentication, tour package management, and bookings.
 
@@ -24,11 +29,6 @@ This is the server-side application for TourZen, a full-stack tour package booki
     *   Increments booking count for packages.
 *   **API Endpoints:**
     *   RESTful API for all client-server interactions.
-
-## Live URL
-
-*   **Server:** https://b11a11-server-side-ronnie012.vercel.app/
-*   **Client:** https://tour-zen-012-upgraded.web.app/
 
 ## Tech Stack
 
