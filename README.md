@@ -9,6 +9,8 @@
 
 This is the server-side application for TourZen, a full-stack tour package booking platform. It handles API requests from the client, manages data persistence with MongoDB, and implements business logic for user authentication, tour package management, and bookings.
 
+![TourZen Server API Screenshot](TourZen_Server_API.png)
+
 ## Features
 
 *   **User Authentication & Authorization:**
